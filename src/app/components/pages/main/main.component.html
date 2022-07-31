@@ -1,0 +1,83 @@
+<div class="container">
+    <div class="">
+        <form class="formulario">
+            <div class="mb-3">
+              <label for="nombreP" class="form-label">Nombre del producto:</label>
+              <input type="text" class="form-control" id="nombreP" aria-describedby="emailHelp" name="nombreP">
+            </div>
+
+            <div class="mb-3">
+                <label for="calendar" class="form-label">Fecha Creación</label>
+                    <div class="input-group" id="calendar">
+                        <input class="form-control" placeholder="yyyy-mm-dd"
+                            name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
+                        <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
+                            <span class="material-symbols-outlined">
+                                calendar_month
+                            </span>
+                        </button>
+                    </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="tiempoP" class="form-label">Tiempo de producción:</label>
+                <input type="text" class="form-control" id="tiempoP" aria-describedby="emailHelp" name="tiempoP">
+            </div>
+
+            <div class="mb-3">
+                <mat-form-field appearance="fill">
+                    <mat-label>Tipo de producto:</mat-label>
+                    <mat-select [(ngModel)]="productoSeleccionado" name="productoSeleccionado">
+                      <mat-option *ngFor="let  producto of tipoProducto" [value]="producto.value">
+                        {{producto.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+            </div>
+            <div class="mb-3">
+                <label for="operario" class="form-label">Operario responsable:</label>
+                <input type="text" class="form-control" id="operario" name="operario">
+            </div>
+            <div class="mb-3">
+                <mat-form-field appearance="fill">
+                    <mat-label>Tipo de empaque:</mat-label>
+                    <mat-select [(ngModel)]="empaqueSeleccionado" name="empaqueSeleccionado">
+                      <mat-option *ngFor="let  empaque of tipoEmpaque" [value]="empaque.value">
+                        {{empaque.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+            </div>
+            <button type="submit" class="btn btn-primary">Agregar</button>
+        </form>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">First</th>
+                <th scope="col">Last</th>
+                <th scope="col">Handle</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td colspan="2">Larry the Bird</td>
+                <td>@twitter</td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+</div>
