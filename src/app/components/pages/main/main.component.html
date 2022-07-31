@@ -1,12 +1,24 @@
-<div class="container">
-    <div class="">
+<div class="container containerall">
+    <div class="container containerForm">
+      <div class="row btncontainer">
+        <h1>Formulario Productos</h1>
+      </div>
+      <div class="row containerTimer">
+          <div>
+            <span class="material-symbols-outlined timer">
+              timer
+              </span>
+            <cd-timer #basicTimer (onTick)="onTick($event)" class="bootstrap-timer" format="hms"></cd-timer>
+          </div>
+      </div>
+      <div class="row">
         <form class="formulario">
             <div class="mb-3">
-              <label for="nombreP" class="form-label">Nombre del producto:</label>
-              <input type="text" class="form-control" id="nombreP" aria-describedby="emailHelp" name="nombreP">
+              <label for="nombreProducto" class="form-label">Nombre del producto:</label>
+              <input type="text" [(ngModel)]="nombreProducto" class="form-control" id="nombreProducto" aria-describedby="emailHelp" name="nombreProducto">
             </div>
 
-            <div class="mb-3">
+           <!--<div class="mb-3">
                 <label for="calendar" class="form-label">Fecha Creación</label>
                     <div class="input-group" id="calendar">
                         <input class="form-control" placeholder="yyyy-mm-dd"
@@ -17,67 +29,73 @@
                             </span>
                         </button>
                     </div>
-            </div>
+            </div>-->
+            <div class="mb-3">
+              <label for="operario" class="form-label">Operario responsable:</label>
+              <input type="text" [(ngModel)]="operario" class="form-control" id="operario" name="operario">
+          </div>
 
-            <div class="mb-3">
-                <label for="tiempoP" class="form-label">Tiempo de producción:</label>
-                <input type="text" class="form-control" id="tiempoP" aria-describedby="emailHelp" name="tiempoP">
-            </div>
+          <div class="mb-3">
+            <mat-form-field appearance="fill">
+                <mat-label>Tipo de empaque:</mat-label>
+                <mat-select [(ngModel)]="empaqueSeleccionado" name="empaqueSeleccionado">
+                  <mat-option *ngFor="let  empaque of tipoEmpaque" [value]="empaque.value">
+                    {{empaque.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+        </div>
 
-            <div class="mb-3">
-                <mat-form-field appearance="fill">
-                    <mat-label>Tipo de producto:</mat-label>
-                    <mat-select [(ngModel)]="productoSeleccionado" name="productoSeleccionado">
-                      <mat-option *ngFor="let  producto of tipoProducto" [value]="producto.value">
-                        {{producto.viewValue}}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-            </div>
-            <div class="mb-3">
-                <label for="operario" class="form-label">Operario responsable:</label>
-                <input type="text" class="form-control" id="operario" name="operario">
-            </div>
-            <div class="mb-3">
-                <mat-form-field appearance="fill">
-                    <mat-label>Tipo de empaque:</mat-label>
-                    <mat-select [(ngModel)]="empaqueSeleccionado" name="empaqueSeleccionado">
-                      <mat-option *ngFor="let  empaque of tipoEmpaque" [value]="empaque.value">
-                        {{empaque.viewValue}}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-            </div>
-            <button type="submit" class="btn btn-primary">Agregar</button>
+
+        <div class="mb-3">
+          <mat-form-field appearance="fill">
+              <mat-label>Tipo de producto:</mat-label>
+              <mat-select [(ngModel)]="productoSeleccionado" name="productoSeleccionado">
+                <mat-option *ngFor="let  producto of tipoProducto" [value]="producto.value">
+                  {{producto.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+      </div>
+
         </form>
-        <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
-              </tr>
-            </tbody>
-          </table>
+      </div>
+      <div class="row btncontainer">
+        <button type="submit" class="btn btn-primary" (click)="Guardar()">{{option}}</button>
+      </div>
     </div>
+    <div class="container tablecontainer">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Acciones</th>
+              <th scope="col">Nombre producto</th>
+              <th scope="col">Tipo de producto</th>
+              <th scope="col">Fecha de produccion</th>
+              <th scope="col">Operario responsable</th>
+              <th scope="col">Tiempo de produccion (min)</th>
+              <th scope="col">Tipo de empaque</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let producto of this.productoService.listProductos">
+              <td>
+                <span class="material-symbols-outlined" (click)="editar(producto._id,producto.nombre,producto.operarioResponsable,producto.tipoProducto,producto.tipoEmpaque)">
+                  edit_note
+                </span>
+                <span class="material-symbols-outlined" (click)="eliminar(producto._id)">
+                delete
+                </span>
+              </td>
+              <td>{{producto.nombre}}</td>
+              <td>{{producto.tipoProducto}}</td>
+              <td>{{producto.fechaProduccion | date: 'dd/MM/yyyy'}}</td>
+              <td>{{producto.operarioResponsable}}</td>
+              <td>{{producto.tiempoProduccion |number:"1.1-1" }} min</td>
+              <td>{{producto.tipoEmpaque}}</td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+    
 </div>
